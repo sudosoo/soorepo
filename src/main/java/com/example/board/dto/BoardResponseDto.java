@@ -1,7 +1,6 @@
 package com.example.board.dto;
 
-public class BoardResponceDto {
+public class BoardResponseDto {
     private String userId;
-    private String userPassword;
     private String contents;
 }
