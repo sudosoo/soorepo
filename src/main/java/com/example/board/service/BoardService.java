@@ -45,13 +45,12 @@ public class BoardService {
     @Transactional(readOnly = true)
     public List<Board> getBoard(){
         return boardRepository.findAllByOrderByModifiedAtDesc();
-    }
+    } //권한 추가 후 업데이트 할 것.
 
     @Transactional
     public String updateBoard(Long id, BoardRequestDto boardRequestDto, HttpServletRequest request) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("게시글이 존재 하지 않습니다."));
         String token = jwtUtil.resolveToken(request);
-        Claims claims;
 
         if(jwtUtil.validateToken(token)){
             board.changeContents(boardRequestDto);
@@ -74,7 +73,5 @@ public class BoardService {
             throw new IllegalArgumentException("Token Error");
         }
         return board.toString("삭제완료되었습니다.");
-
     }
-
 }

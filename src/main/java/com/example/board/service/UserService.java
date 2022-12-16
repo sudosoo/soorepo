@@ -48,7 +48,6 @@ public class UserService {
         }
         User user = new User(userName, userPassword, role);
         userRepository.save(user);
-
     }
 
     @Transactional(readOnly = true)
@@ -89,9 +88,8 @@ public class UserService {
         }else{
             userCheck = userRepository.findAll();
         }
-
         return userCheck.stream().map(UserResponseDto::of).toList();
-        //**
+
     }
 
 
