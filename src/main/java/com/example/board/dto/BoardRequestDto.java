@@ -5,11 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class BoardRequestDto {
-    
-    private String userId;
-    private String userPassword;
+public class BoardRequestDto  {
+    private Long id;
     private String contents;
 }
-
-

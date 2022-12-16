@@ -1,10 +1,9 @@
 package com.example.board.dto;
 
-
 import lombok.Getter;
 
 @Getter
-public class BoardResponseDto {
+public class LoginRequestDto {
     private String userName;
-    private String contents;
+    private String userPassword;
 }
