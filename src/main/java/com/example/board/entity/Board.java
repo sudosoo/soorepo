@@ -2,10 +2,10 @@ package com.example.board.entity;
 
 import com.example.board.dto.BoardRequestDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -14,20 +14,21 @@ public class Board extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(nullable = false)
-    private String username;
     @Column
     private String contents;
+    @Column
+    private String userName;
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
+    private String boardPassword;
 
-    public Board(String boardusername,BoardRequestDto boardRequestDto,UserRoleEnum userRoleEnum) {
+
+
+    public Board(String userName,BoardRequestDto boardRequestDto) {
         this.id = boardRequestDto.getId();
-        this.username = boardusername;
+        this.userName = userName;
+        this.boardPassword = boardRequestDto.getBoardPassword();
         this.contents = boardRequestDto.getContents();
-        this.role = userRoleEnum;
     }
 
     public void changeContents(BoardRequestDto boardRequestDto) {

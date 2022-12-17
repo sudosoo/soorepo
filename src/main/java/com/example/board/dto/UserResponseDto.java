@@ -14,7 +14,6 @@ public class UserResponseDto {
     private String userName;
     private UserRoleEnum roleEnum;
     public static UserResponseDto of (User user){
-
         return new UserResponseDto(user.getUsername(),user.getRole());
     }
 }

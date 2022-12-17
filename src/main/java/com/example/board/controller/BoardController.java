@@ -28,7 +28,7 @@ public class BoardController {
         return boardService.updateBoard(id,boardRequestDto,request);
     }
     @DeleteMapping("/api/boards/{id}")
-    public String deleteBoard(@PathVariable Long id, HttpServletRequest request){
-        return boardService.deleteBoard(id,request);
+    public String deleteBoard(@PathVariable Long id,@RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request){
+        return boardService.deleteBoard(id,boardRequestDto,request);
     }
 }
