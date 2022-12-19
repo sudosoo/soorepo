@@ -2,7 +2,6 @@ package com.example.board.entity;
 
 import com.example.board.dto.BoardRequestDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,8 +22,7 @@ public class Board extends Timestamped {
     private String boardPassword;
 
 
-
-    public Board(String userName,BoardRequestDto boardRequestDto) {
+    public Board(String userName, BoardRequestDto boardRequestDto) {
         this.id = boardRequestDto.getId();
         this.userName = userName;
         this.boardPassword = boardRequestDto.getBoardPassword();
@@ -34,6 +32,7 @@ public class Board extends Timestamped {
     public void changeContents(BoardRequestDto boardRequestDto) {
         this.contents = boardRequestDto.getContents();
     }
+
     public String toString(String s) {
         return s;
     }
