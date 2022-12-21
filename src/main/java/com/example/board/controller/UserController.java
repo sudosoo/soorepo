@@ -35,9 +35,9 @@ public class UserController {
     }
 
     @GetMapping("/api/user/users")
-    public List<UserResponseDto> users(HttpServletRequest request) {
+    public List<UserResponseDto> userList(HttpServletRequest request) {
         Claims claims = checkUtil.tokenCheck(request);
-        return userService.users(claims);
+        return userService.userList(claims);
     }
 
 }

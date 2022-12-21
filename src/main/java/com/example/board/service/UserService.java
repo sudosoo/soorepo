@@ -1,5 +1,6 @@
 package com.example.board.service;
 
+import com.example.board.checkUtil.CheckUtil;
 import com.example.board.dto.LoginRequestDto;
 import com.example.board.dto.SignupRequestDto;
 import com.example.board.dto.UserResponseDto;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CheckUtil checkUtil;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
@@ -31,9 +33,9 @@ public class UserService {
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
+
         // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
-        System.out.println(signupRequestDto.getAdminToken().length());
         if (signupRequestDto.getAdminToken().length() > 0) {
             if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
@@ -60,21 +62,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponseDto> users(Claims claims) {
-
-        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
-        );
-        UserRoleEnum userRoleEnum = user.getRole();
-        Collection<User> userCheck;
-
-        if (userRoleEnum == UserRoleEnum.USER) {
-            userCheck = userRepository.findAllByUsername(claims.getSubject());
-        } else {
-            userCheck = userRepository.findAll();
-        }
+    public List<UserResponseDto> userList(Claims claims) {
+        Collection<User> userCheck = checkUtil.userRoleCheck(claims);
         return userCheck.stream().map(UserResponseDto::of).toList();
-
     }
 
 

@@ -12,7 +12,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long uid;
 
     // nullable: null 허용 여부
     // unique: 중복 허용 여부 (false 일때 중복 허용)

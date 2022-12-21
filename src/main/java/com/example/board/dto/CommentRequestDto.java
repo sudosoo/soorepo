@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class BoardRequestDto {
+public class CommentRequestDto {
     private Long id;
     private String userName;
-    private String boardPassword;
-    private String contents;
+    private String commentContents;
+    private String commentPassword;
 
 }

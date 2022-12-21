@@ -4,6 +4,9 @@ import com.example.board.dto.BoardRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.util.Lazy;
+
+import java.util.List;
 
 
 @Getter
@@ -11,15 +14,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Board extends Timestamped {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long id;
-    @Column
-    private String contents;
-    @Column
+
+    @Column(nullable = false)
     private String userName;
 
     @Column(nullable = false)
     private String boardPassword;
+
+    @Column
+    private String contents;
+
+    @Column
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Comment> commentList;
+    //영속성관계를 안함 ** 해야하는경우와 안해야 하는경우는 뭘까 ?
 
 
     public Board(String userName, BoardRequestDto boardRequestDto) {
@@ -27,6 +38,7 @@ public class Board extends Timestamped {
         this.userName = userName;
         this.boardPassword = boardRequestDto.getBoardPassword();
         this.contents = boardRequestDto.getContents();
+        this.commentList = getCommentList();
     }
 
     public void changeContents(BoardRequestDto boardRequestDto) {
@@ -37,4 +49,7 @@ public class Board extends Timestamped {
         return s;
     }
 
+    public void addComment(Comment comment) {
+        this.commentList.add(comment);
+    }
 }

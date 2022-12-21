@@ -5,15 +5,14 @@ import com.example.board.entity.UserRoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 
 @Getter
 @AllArgsConstructor
 public class UserResponseDto {
     private String userName;
     private UserRoleEnum roleEnum;
-    public static UserResponseDto of (User user){
-        return new UserResponseDto(user.getUsername(),user.getRole());
+
+    public static UserResponseDto of(User user) {
+        return new UserResponseDto(user.getUsername(), user.getRole());
     }
 }

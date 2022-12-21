@@ -2,6 +2,7 @@ package com.example.board.controller;
 
 import com.example.board.checkUtil.CheckUtil;
 import com.example.board.dto.BoardRequestDto;
+import com.example.board.dto.BoardResponseDto;
 import com.example.board.entity.Board;
 import com.example.board.service.BoardService;
 import io.jsonwebtoken.Claims;
@@ -24,9 +25,9 @@ public class BoardController {
     }
 
     @GetMapping("/api/boards")
-    public List<Board> getBoard() {
-
-        return boardService.getBoard();
+    public List<BoardResponseDto> getBoard(HttpServletRequest request) {
+        Claims claims = checkUtil.tokenCheck(request);
+        return boardService.getBoard(claims);
     }
 
     @PutMapping("/api/boards/{id}")
