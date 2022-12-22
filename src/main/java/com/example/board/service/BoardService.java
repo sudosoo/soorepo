@@ -2,7 +2,6 @@ package com.example.board.service;
 
 import com.example.board.checkUtil.CheckUtil;
 import com.example.board.dto.BoardRequestDto;
-//import com.example.board.dto.BoardResponseDto;
 import com.example.board.dto.BoardResponseDto;
 import com.example.board.entity.Board;
 import com.example.board.entity.User;
@@ -48,7 +47,6 @@ public class BoardService {
     @Transactional
     public String updateBoard(Long id, BoardRequestDto boardRequestDto, Claims claims) {
         User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
-
         Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("게시글이 존재 하지 않습니다."));
         if (user.getRole() == UserRoleEnum.ADMIN) {
             board.changeContents(boardRequestDto);
@@ -67,7 +65,6 @@ public class BoardService {
     @Transactional
     public String deleteBoard(Long id, BoardRequestDto boardRequestDto, Claims claims) {
         User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
-
         Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("게시글이 존재 하지 않습니다."));
         if (user.getRole() == UserRoleEnum.ADMIN) {
             boardRepository.delete(board);

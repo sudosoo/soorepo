@@ -40,7 +40,7 @@ public class CommentService {
     @Transactional
     public String commentDelete(Long id, Long cid, Claims claims, CommentRequestDto commentRequestDto) {
         User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
-        Comment comment = commentRepository.findById(cid).orElseThrow(() -> new IllegalArgumentException("게시글이 존재 하지 않습니다."));
+        Comment comment = commentRepository.findById(cid).orElseThrow(() -> new IllegalArgumentException("댓글이 존재 하지 않습니다."));
         Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("게시글이 존재 하지 않습니다."));
         if (user.getRole() == UserRoleEnum.ADMIN) {
             commentRepository.delete(comment);
@@ -53,13 +53,13 @@ public class CommentService {
                 throw new IllegalArgumentException("댓글의 비밀번호가 일치하지 않습니다.");
             }
         }
-        return comment.toString("댓글삭제가 완료 되었습니다.");
+        return comment.toString("댓글 삭제가 완료 되었습니다.");
     }
 
     @Transactional
     public String commentUpdate(Long id, Long cid, Claims claims, CommentRequestDto commentRequestDto) {
         User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
-        Comment comment = commentRepository.findById(cid).orElseThrow(() -> new IllegalArgumentException("게시글이 존재 하지 않습니다."));
+        Comment comment = commentRepository.findById(cid).orElseThrow(() -> new IllegalArgumentException("댓글이 존재 하지 않습니다."));
         Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("게시글이 존재 하지 않습니다."));
         if (user.getRole() == UserRoleEnum.ADMIN) {
             comment.changeContents(commentRequestDto);
@@ -74,6 +74,8 @@ public class CommentService {
                 throw new IllegalArgumentException("댓글의 비밀번호가 일치하지 않습니다.");
             }
         }
-        return comment.toString("댓글편집이 완료 되었습니다.");
+        return comment.toString("댓글 편집이 완료 되었습니다.");
     }
+
+
 }

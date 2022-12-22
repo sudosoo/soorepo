@@ -1,10 +1,10 @@
 package com.example.board.entity;
 
 import com.example.board.dto.BoardRequestDto;
+import com.example.board.dto.CommentResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.util.Lazy;
 
 import java.util.List;
 

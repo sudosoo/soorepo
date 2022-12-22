@@ -15,19 +15,19 @@ public class CommentController {
     private final CheckUtil checkUtil;
     private final CommentService commentService;
 
-    @PostMapping("/api/{id}/comment")
+    @PostMapping("/boards/{id}/comment")
     public String commentCreate(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) {
         Claims claims = checkUtil.tokenCheck(request);
         return commentService.commentCreate(id, commentRequestDto, claims);
     }
 
-    @DeleteMapping("/api/{id}/comment/{cid}")
+    @DeleteMapping("/boards/{id}/comment/{cid}")
     public String commentDelete(@PathVariable Long id, @PathVariable Long cid, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) {
         Claims claims = checkUtil.tokenCheck(request);
         return commentService.commentDelete(id, cid, claims, commentRequestDto);
     }
 
-    @PutMapping("/api/{id}/comment/{cid}")
+    @PutMapping("/boards/{id}/comment/{cid}")
     public String commentUpdate(@PathVariable Long id, @PathVariable Long cid, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request) {
         Claims claims = checkUtil.tokenCheck(request);
         return commentService.commentUpdate(id, cid, claims, commentRequestDto);

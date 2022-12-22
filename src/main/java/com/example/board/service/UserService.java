@@ -47,7 +47,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User login(LoginRequestDto loginRequestDto) {
+    public UserResponseDto login(LoginRequestDto loginRequestDto) {
         String username = loginRequestDto.getUserName();
         String userpassword = loginRequestDto.getUserPassword();
         // 사용자 확인
@@ -58,7 +58,7 @@ public class UserService {
         if (!user.getPassword().equals(userpassword)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        return user;
+        return new UserResponseDto(user);
     }
 
     @Transactional(readOnly = true)
