@@ -50,11 +50,9 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("게시글이 존재 하지 않습니다."));
         if (user.getRole() == UserRoleEnum.ADMIN) {
             board.changeContents(boardRequestDto);
-            boardRepository.save(board);
         } else if (user.getRole() == UserRoleEnum.USER) {
             if (checkUtil.boardPasswordCheck(claims, board, boardRequestDto)) {
                 board.changeContents(boardRequestDto);
-                boardRepository.save(board);
             } else {
                 throw new IllegalArgumentException("게시물 비밀번호가 일치하지 않습니다.");
             }

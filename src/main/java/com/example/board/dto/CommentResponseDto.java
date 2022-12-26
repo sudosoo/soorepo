@@ -1,7 +1,6 @@
 package com.example.board.dto;
 
 
-import com.example.board.entity.Board;
 import com.example.board.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

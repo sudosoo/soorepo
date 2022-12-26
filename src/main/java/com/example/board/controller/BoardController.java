@@ -3,7 +3,6 @@ package com.example.board.controller;
 import com.example.board.checkUtil.CheckUtil;
 import com.example.board.dto.BoardRequestDto;
 import com.example.board.dto.BoardResponseDto;
-import com.example.board.entity.Board;
 import com.example.board.service.BoardService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;

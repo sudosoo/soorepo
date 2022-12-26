@@ -7,8 +7,6 @@ import com.example.board.entity.Comment;
 import com.example.board.entity.User;
 import com.example.board.entity.UserRoleEnum;
 import com.example.board.jwt.JwtUtil;
-import com.example.board.repository.BoardRepository;
-import com.example.board.repository.CommentRepository;
 import com.example.board.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,9 +21,7 @@ import java.util.Collection;
 public class CheckUtil {
 
     private final JwtUtil jwtUtil;
-    private final BoardRepository boardRepository;
     private final UserRepository userRepository;
-    private final CommentRepository commentRepository;
 
     public Claims tokenCheck(HttpServletRequest request) {
         String token = jwtUtil.resolveToken(request);

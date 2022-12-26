@@ -34,7 +34,6 @@ public class UserController {
         return "success";
     }
 
-    //로그인할때 토큰체크 한번하고 인증완료된 유저로 변경 < 인증완료된 유저와 유저권한 체크
 
     @GetMapping("/user/users")
     public List<UserResponseDto> userList(HttpServletRequest request) {

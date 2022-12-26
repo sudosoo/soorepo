@@ -1,7 +1,6 @@
 package com.example.board.entity;
 
 import com.example.board.dto.BoardRequestDto;
-import com.example.board.dto.CommentResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,6 @@ public class Board extends Timestamped {
     @Column
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
-    //영속성관계를 안함 ** 해야하는경우와 안해야 하는경우는 뭘까 ?
 
 
     public Board(String userName, BoardRequestDto boardRequestDto) {

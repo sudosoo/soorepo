@@ -33,8 +33,7 @@ public class CommentService {
         Comment comment = new Comment(board, username, commentRequestDto);
         board.addComment(comment);
         commentRepository.save(comment); // 새로 생성된 커멘트 insert
-        boardRepository.save(board);  // 댓글이 추가됐으니가 update
-        return comment.getCommentContents();
+        return comment.getCommentContents(); //플러시가 일어남
     }
 
     @Transactional
@@ -44,11 +43,9 @@ public class CommentService {
         Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("게시글이 존재 하지 않습니다."));
         if (user.getRole() == UserRoleEnum.ADMIN) {
             commentRepository.delete(comment);
-            boardRepository.save(board);
         } else if (user.getRole() == UserRoleEnum.USER) {
             if (checkUtil.commentPasswordCheck(claims, comment, commentRequestDto)) {
                 commentRepository.delete(comment);
-                boardRepository.save(board);
             } else {
                 throw new IllegalArgumentException("댓글의 비밀번호가 일치하지 않습니다.");
             }
@@ -64,12 +61,10 @@ public class CommentService {
         if (user.getRole() == UserRoleEnum.ADMIN) {
             comment.changeContents(commentRequestDto);
             commentRepository.save(comment);
-            boardRepository.save(board);
         } else if (user.getRole() == UserRoleEnum.USER) {
             if (checkUtil.commentPasswordCheck(claims, comment, commentRequestDto)) {
                 comment.changeContents(commentRequestDto);
                 commentRepository.save(comment);
-                boardRepository.save(board);
             } else {
                 throw new IllegalArgumentException("댓글의 비밀번호가 일치하지 않습니다.");
             }

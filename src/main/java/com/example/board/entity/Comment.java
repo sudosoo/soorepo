@@ -1,12 +1,9 @@
 package com.example.board.entity;
 
 import com.example.board.dto.CommentRequestDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @Entity
