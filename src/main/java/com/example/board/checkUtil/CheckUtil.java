@@ -1,5 +1,6 @@
 package com.example.board.checkUtil;
 
+import com.example.board.dto.AuthenticatedUserName;
 import com.example.board.dto.BoardRequestDto;
 import com.example.board.dto.CommentRequestDto;
 import com.example.board.entity.Board;
@@ -23,19 +24,21 @@ public class CheckUtil {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-    public Claims tokenCheck(HttpServletRequest request) {
-        String token = jwtUtil.resolveToken(request);
+    public String tokenCheckImportTokens(HttpServletRequest request) {
         Claims claims;
+        String token = jwtUtil.resolveToken(request);
         if (jwtUtil.validateToken(token)) {
             claims = jwtUtil.getUserInfoFromToken(token);
+            return new AuthenticatedUserName().authUser(claims);
         } else {
             throw new IllegalArgumentException("Token Error");
         }
-        return claims;
-    }//토큰 유효성 체크
+    }
 
-    public boolean boardPasswordCheck(Claims claims, Board board, BoardRequestDto boardRequestDto) {
-        if (board.getUserName().equals(claims.getSubject())) {
+
+    //토큰 유효성 체크
+    public boolean boardPasswordCheck(String authUserName, Board board, BoardRequestDto boardRequestDto) {
+        if (board.getUserName().equals(authUserName)) {
             if (board.getBoardPassword().equals(boardRequestDto.getBoardPassword())) {
                 return true;
             } else {
@@ -46,20 +49,20 @@ public class CheckUtil {
     } // 게시판 비밀번호 확인 (유저아이디,게시판 작성 비밀번호,입력한 비밀번호)
 
 
-    public Collection<User> userRoleCheck(Claims claims) {
-        User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
+    public Collection<User> userRoleCheck(String authUserName) {
+        User user = userRepository.findByUsername(authUserName).orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
         UserRoleEnum userRoleEnum = user.getRole();
         Collection<User> userCheck;
         if (userRoleEnum == UserRoleEnum.USER) {
-            userCheck = userRepository.findAllByUsername(claims.getSubject());
+            userCheck = userRepository.findAllByUsername(authUserName);
         } else {
             userCheck = userRepository.findAll();
         }
         return userCheck;
     }
 
-    public boolean commentPasswordCheck(Claims claims, Comment comment, CommentRequestDto commentRequestDto) {
-        if (commentRequestDto.getUserName().equals(claims.getSubject())) {
+    public boolean commentPasswordCheck(String authUserName, Comment comment, CommentRequestDto commentRequestDto) {
+        if (commentRequestDto.getUserName().equals(authUserName)) {
             if (comment.getCommentPassword().equals(commentRequestDto.getCommentPassword())) {
                 return true;
             } else {

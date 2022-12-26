@@ -4,7 +4,6 @@ import com.example.board.checkUtil.CheckUtil;
 import com.example.board.dto.BoardRequestDto;
 import com.example.board.dto.BoardResponseDto;
 import com.example.board.service.BoardService;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,27 +17,27 @@ public class BoardController {
     private final CheckUtil checkUtil;
 
     @PostMapping("/boards")
-    public String createBoard(@RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
-        Claims claims = checkUtil.tokenCheck(request);
-        return boardService.createBoard(boardRequestDto, claims);
+    public void createBoard(@RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
+        String authenticatedUserName = checkUtil.tokenCheckImportTokens(request);
+        boardService.createBoard(boardRequestDto, authenticatedUserName);
     }
 
 
     @GetMapping("/boards")
     public List<BoardResponseDto> getBoard(HttpServletRequest request) {
-        Claims claims = checkUtil.tokenCheck(request);
-        return boardService.getBoard(claims);
+        String authenticatedUserName = checkUtil.tokenCheckImportTokens(request);
+        return boardService.getBoard(authenticatedUserName);
     }
 
     @PutMapping("/boards/{id}")
-    public String updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
-        Claims claims = checkUtil.tokenCheck(request);
-        return boardService.updateBoard(id, boardRequestDto, claims);
+    public void updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
+        String authenticatedUserName = checkUtil.tokenCheckImportTokens(request);
+        boardService.updateBoard(id, boardRequestDto, authenticatedUserName);
     }
 
     @DeleteMapping("/boards/{id}")
-    public String deleteBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
-        Claims claims = checkUtil.tokenCheck(request);
-        return boardService.deleteBoard(id, boardRequestDto, claims);
+    public void deleteBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
+        String authenticatedUserName = checkUtil.tokenCheckImportTokens(request);
+        boardService.deleteBoard(id, boardRequestDto, authenticatedUserName);
     }
 }

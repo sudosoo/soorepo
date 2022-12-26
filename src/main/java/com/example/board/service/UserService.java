@@ -7,7 +7,6 @@ import com.example.board.dto.UserResponseDto;
 import com.example.board.entity.User;
 import com.example.board.entity.UserRoleEnum;
 import com.example.board.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,21 +48,21 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDto login(LoginRequestDto loginRequestDto) {
         String username = loginRequestDto.getUserName();
-        String userpassword = loginRequestDto.getUserPassword();
+        String requestUserPassword = loginRequestDto.getUserPassword();
         // 사용자 확인
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
         // 비밀번호 확인
-        if (!user.getPassword().equals(userpassword)) {
+        if (!user.getPassword().equals(requestUserPassword)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         return new UserResponseDto(user);
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponseDto> userList(Claims claims) {
-        Collection<User> userCheck = checkUtil.userRoleCheck(claims);
+    public List<UserResponseDto> userList(String authUserName) {
+        Collection<User> userCheck = checkUtil.userRoleCheck(authUserName);
         return userCheck.stream().map(UserResponseDto::of).toList();
     }
 

@@ -6,7 +6,6 @@ import com.example.board.dto.SignupRequestDto;
 import com.example.board.dto.UserResponseDto;
 import com.example.board.jwt.JwtUtil;
 import com.example.board.service.UserService;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +36,8 @@ public class UserController {
 
     @GetMapping("/user/users")
     public List<UserResponseDto> userList(HttpServletRequest request) {
-        Claims claims = checkUtil.tokenCheck(request);
-        return userService.userList(claims);
+        String authenticatedUser = checkUtil.tokenCheckImportTokens(request);
+        return userService.userList(authenticatedUser);
     }
 
 }
