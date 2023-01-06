@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity(name = "users")
 @NoArgsConstructor
-public class User {
+public class User extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,7 @@ public class User {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
+
 
     public User(String username, String password, UserRoleEnum role) {
         this.username = username;

@@ -1,43 +1,42 @@
 package com.example.board.controller;
 
-import com.example.board.checkUtil.CheckUtil;
 import com.example.board.dto.BoardRequestDto;
 import com.example.board.dto.BoardResponseDto;
-import com.example.board.service.BoardService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.board.security.UserDetailsImpl;
+import com.example.board.service.board.BoardServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/boards")
+@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 public class BoardController {
-    private final BoardService boardService;
-    private final CheckUtil checkUtil;
+    private final BoardServiceImpl boardService;
 
-    @PostMapping("/boards")
-    public void createBoard(@RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
-        String authenticatedUserName = checkUtil.tokenCheckImportTokens(request);
-        boardService.createBoard(boardRequestDto, authenticatedUserName);
+    @PostMapping("/")
+    public void createBoard(@RequestBody BoardRequestDto boardRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        boardService.createdBoard(boardRequestDto, userDetails.getUsername());
     }
 
-
-    @GetMapping("/boards")
-    public List<BoardResponseDto> getBoard(HttpServletRequest request) {
-        String authenticatedUserName = checkUtil.tokenCheckImportTokens(request);
-        return boardService.getBoard(authenticatedUserName);
+    @GetMapping("/")
+    @Secured("ROLE_ADMIN")
+    public List<BoardResponseDto> getBoard() {
+        return boardService.getBoard();
     }
 
-    @PutMapping("/boards/{id}")
-    public void updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
-        String authenticatedUserName = checkUtil.tokenCheckImportTokens(request);
-        boardService.updateBoard(id, boardRequestDto, authenticatedUserName);
+    @PutMapping("/{id}")
+    public void updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        boardService.updateBoard(id, boardRequestDto, userDetails.getUsername());
     }
 
-    @DeleteMapping("/boards/{id}")
-    public void deleteBoard(@PathVariable Long id, @RequestBody BoardRequestDto boardRequestDto, HttpServletRequest request) {
-        String authenticatedUserName = checkUtil.tokenCheckImportTokens(request);
-        boardService.deleteBoard(id, boardRequestDto, authenticatedUserName);
+    @DeleteMapping("/{id}")
+    public void deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        boardService.deleteBoard(id, userDetails.getUsername());
     }
 }
